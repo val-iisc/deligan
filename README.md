@@ -22,16 +22,20 @@ The models for evaluating DeLiGAN on these datasets can be found in our repo. Th
 
   To run any of the models
    - First download the datasets and store them in the respective sub-folder of the datasets folder (src/datasets/) 
-   - To run the model on any of the datasets, go to the respective src folders and run the dg_'dataset'.py file in the respective dataset folders with two arguments namely, --data_dir and --results_dir. For example, starting from the top-level folder, cd src/sketches ; python dg_sketches.py --data_dir ../datasets/sketches/ --results_dir ../results/sketches
-   - Note that the results_dir needs to have 'train' as a sub-folder.
+   - To run the model on any of the datasets, go to the respective src folders and run the `dg_'dataset'.py` file in the respective dataset folders with two arguments namely, `--data_dir` and `--results_dir`. For example, starting from the top-level folder, 
+
+    cd src/sketches 
+    python dg_sketches.py --data_dir ../datasets/sketches/ --results_dir ../results/sketches
+
+   - Note that the `results_dir` needs to have 'train' as a sub-folder.
 
 ### Modified inception score  
 For example, to obtain the modified inception scores on CIFAR
-   - Download the inception-v3 model (http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz.) and store it in src/modified \inception \scores/cifar10/
-   - Generate samples using the model trained in the dg_cifar.py and copy it to src/modified_inception_scores/cifar10/
-   - Run transfer_cifar10_softmax_b1.py to transfer learn the last layer.
-   - Perform the modifications detailed in the comments in transfer_cifar10_softmax_b1.py and re-run it to evaluate the inception scores.
-   - The provided code can be modified slightly to work for sketches as well by following the comments provided in transfer_cifar10_softmax_b1.py
+   - Download the inception-v3 model (http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz.) and store it in `src/modified_inception_scores/cifar10/`
+   - Generate samples using the model trained in the `dg_cifar.py` and copy it to `src/modified_inception_scores/cifar10/`
+   - Run `transfer_cifar10_softmax_b1.py` to transfer learn the last layer.
+   - Perform the modifications detailed in the comments in `transfer_cifar10_softmax_b1.py` and re-run it to evaluate the inception scores.
+   - The provided code can be modified slightly to work for sketches as well by following the comments provided in `transfer_cifar10_softmax_b1.py`
    
 Parts of the code in this implementation have been borrowed from the Improved-GAN implementation by OpenAI (T. Salimans, I. Goodfellow, W. Zaremba, V. Cheung, A. Radford, and X. Chen. Improved techniques for training gans. In Advances in Neural Information Processing Systems, pages 2226–2234, 2016.)
 
