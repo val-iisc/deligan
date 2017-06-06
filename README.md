@@ -37,7 +37,7 @@ For example, to obtain the modified inception scores on CIFAR
    - Perform the modifications detailed in the comments in `transfer_cifar10_softmax_b1.py` and re-run it to evaluate the inception scores.
    - The provided code can be modified slightly to work for sketches as well by following the comments provided in `transfer_cifar10_softmax_b1.py`
    
-Parts of the code in this implementation have been borrowed from the Improved-GAN implementation by OpenAI (T. Salimans, I. Goodfellow, W. Zaremba, V. Cheung, A. Radford, and X. Chen. Improved techniques for training gans. In Advances in Neural Information Processing Systems, pages 2226–2234, 2016.)
+Parts of the code in this implementation have been borrowed from the [Improved-GAN implementation](https://github.com/openai/improved-gan) by OpenAI (T. Salimans, I. Goodfellow, W. Zaremba, V. Cheung, A. Radford, and X. Chen. Improved techniques for training gans. In Advances in Neural Information Processing Systems, pages 2226–2234, 2016.)
 
 ## Q&A
 
