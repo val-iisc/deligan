@@ -14,7 +14,7 @@
    3. CIFAR-10 (https://www.cs.toronto.edu/~kriz/cifar.html)
    4. Sketches (http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
 
-The models for evaluating DeLiGAN on these datasets can be found in our repo. The details for how to download and lay out the datasets can be found in src/datasets/README.md 
+The models for evaluating DeLiGAN on these datasets can be found in our repo. The details for how to download and lay out the datasets can be found in `src/datasets/README.md` 
 
 ## Usage
 
