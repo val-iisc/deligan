@@ -39,6 +39,15 @@ For example, to obtain the modified inception scores on CIFAR
    
 Parts of the code in this implementation have been borrowed from the [Improved-GAN implementation](https://github.com/openai/improved-gan) by OpenAI (T. Salimans, I. Goodfellow, W. Zaremba, V. Cheung, A. Radford, and X. Chen. Improved techniques for training gans. In Advances in Neural Information Processing Systems, pages 2226–2234, 2016.)
 
+## Cite
+
+    @inproceedings{DeLiGAN17,
+      author = {Gurumurthy, Swaminathan and Sarvadevabhatla, Ravi Kiran and R. Venkatesh Babu},
+      title = {DeLiGAN : Generative Adversarial Networks for Diverse and Limited Data},
+      booktitle = {Proceedings of the 2017 Conference on Computer Vision and Pattern Recognition},
+      location = {Honolulu, Hawaii, USA}
+     }
+
 ## Q&A
 
 Please send message to gauthamsindia95@gmail.com if you have any query regarding the code.
