@@ -25,13 +25,13 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     num_inputs=df_dim*4
     theta = tf.get_variable(name+"/theta",[num_inputs, num_kernels, dim_per_kernel], initializer=tf.random_normal_initializer(stddev=0.05))
     log_weight_scale = tf.get_variable(name+"/lws",[num_kernels, dim_per_kernel], initializer=tf.constant_initializer(0.0))
-    W = tf.mul(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
+    W = tf.multiply(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
     W = tf.reshape(W,[-1,num_kernels*dim_per_kernel])
     x = input
     x=tf.reshape(x, [batchsize,num_inputs])
     activation = tf.matmul(x, W)
     activation = tf.reshape(activation,[-1,num_kernels,dim_per_kernel])
-    abs_dif = tf.mul(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
+    abs_dif = tf.multiply(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
                                                 1-tf.expand_dims(tf.constant(np.eye(batchsize),dtype=np.float32),1))
     f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))  
     print(f.get_shape())
@@ -118,7 +118,7 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     # Our Mixture Model modifications
     zin = tf.get_variable("g_z", [batchsize, z_dim],initializer=tf.random_uniform_initializer(-1,1))
     zsig = tf.get_variable("g_sig", [batchsize, z_dim],initializer=tf.constant_initializer(0.2))
-    inp = tf.add(zin,tf.mul(z,zsig))
+    inp = tf.add(zin,tf.multiply(z,zsig))
     # inp = z     				# Uncomment this line when training/testing baseline GAN
     G = generator(inp)
     D_prob, D_logit = discriminator(images)
