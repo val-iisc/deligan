@@ -31,7 +31,7 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     x=tf.reshape(x, [batchsize,num_inputs])
     activation = tf.matmul(x, W)
     activation = tf.reshape(activation,[-1,num_kernels,dim_per_kernel])
-    abs_dif = tf.multiply(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
+    abs_dif = tf.multiply(tf.reduce_sum(tf.abs(tf.subtract(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
                                                 1-tf.expand_dims(tf.constant(np.eye(batchsize),dtype=np.float32),1))
     f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))  
     print(f.get_shape())
