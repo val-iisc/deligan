@@ -25,7 +25,7 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     num_inputs=df_dim*4
     theta = tf.get_variable(name+"/theta",[num_inputs, num_kernels, dim_per_kernel], initializer=tf.random_normal_initializer(stddev=0.05))
     log_weight_scale = tf.get_variable(name+"/lws",[num_kernels, dim_per_kernel], initializer=tf.constant_initializer(0.0))
-    W = tf.multiply(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
+    W = tf.mul(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
     W = tf.reshape(W,[-1,num_kernels*dim_per_kernel])
     x = input
     x=tf.reshape(x, [batchsize,num_inputs])
