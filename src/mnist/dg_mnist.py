@@ -36,7 +36,7 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))  
     print(f.get_shape())
     print(input.get_shape())
-    return tf.concat(1,[x, f])
+    return tf.concat([x,f], 1)
 
 def linear(x,output_dim, name="linear"):
 
