@@ -125,11 +125,11 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 
     D_fake_prob, D_fake_logit = discriminator(G, Reuse=True)
 
-    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_logit, tf.ones_like(D_logit)))
-    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.zeros_like(D_fake_logit)))
+    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_logit, logits=tf.ones_like(D_logit)))
+    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.zeros_like(D_fake_logit)))
 
     sigma_loss = tf.reduce_mean(tf.square(zsig-1))/3    # sigma regularizer
-    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.ones_like(D_fake_logit)))
+    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.ones_like(D_fake_logit)))
     dloss = d_loss_real + d_loss_fake 
 
     t_vars = tf.trainable_variables()
