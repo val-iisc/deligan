@@ -51,7 +51,7 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     
     zin = tf.get_variable("g_z", [batchsize, z_dim],initializer=tf.random_uniform_initializer(-1,1))
     zsig = tf.get_variable("g_sig", [batchsize, z_dim],initializer=tf.constant_initializer(0.02))
-    inp = tf.add(zin,tf.mul(z,zsig))				#Uncomment this line for testing the DeliGAN
+    inp = tf.add(zin,tf.multiply(z,zsig))				#Uncomment this line for testing the DeliGAN
     #moe = tf.eye(batchsize)					#Uncomment this line for testing the MoE-GAN
     #inp = tf.concat_v2([moe, z],1) 				#Uncomment this line for testing the MoE-GAN
 
@@ -70,9 +70,9 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 
     # Defining Losses
     sig_loss = 0.1*tf.reduce_mean(tf.square(zsig-1))
-    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_logit, tf.ones_like(D_logit)))
-    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.zeros_like(D_fake_logit)))
-    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.ones_like(D_fake_logit)))
+    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_logit, logits=tf.ones_like(D_logit)))
+    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.zeros_like(D_fake_logit)))
+    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.ones_like(D_fake_logit)))
     gloss1 = gloss+sig_loss
     dloss = d_loss_real + d_loss_fake
 

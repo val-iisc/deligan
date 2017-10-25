@@ -25,18 +25,18 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     num_inputs=df_dim*4
     theta = tf.get_variable(name+"/theta",[num_inputs, num_kernels, dim_per_kernel], initializer=tf.random_normal_initializer(stddev=0.05))
     log_weight_scale = tf.get_variable(name+"/lws",[num_kernels, dim_per_kernel], initializer=tf.constant_initializer(0.0))
-    W = tf.mul(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
+    W = tf.multiply(theta, tf.expand_dims(tf.exp(log_weight_scale)/tf.sqrt(tf.reduce_sum(tf.square(theta),0)),0))
     W = tf.reshape(W,[-1,num_kernels*dim_per_kernel])
     x = input
     x=tf.reshape(x, [batchsize,num_inputs])
     activation = tf.matmul(x, W)
     activation = tf.reshape(activation,[-1,num_kernels,dim_per_kernel])
-    abs_dif = tf.mul(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
+    abs_dif = tf.multiply(tf.reduce_sum(tf.abs(tf.subtract(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
                                                 1-tf.expand_dims(tf.constant(np.eye(batchsize),dtype=np.float32),1))
     f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))  
     print(f.get_shape())
     print(input.get_shape())
-    return tf.concat(1,[x, f])
+    return tf.concat([x,f], 1)
 
 def linear(x,output_dim, name="linear"):
 
@@ -118,18 +118,18 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
     # Our Mixture Model modifications
     zin = tf.get_variable("g_z", [batchsize, z_dim],initializer=tf.random_uniform_initializer(-1,1))
     zsig = tf.get_variable("g_sig", [batchsize, z_dim],initializer=tf.constant_initializer(0.2))
-    inp = tf.add(zin,tf.mul(z,zsig))
+    inp = tf.add(zin,tf.multiply(z,zsig))
     # inp = z     				# Uncomment this line when training/testing baseline GAN
     G = generator(inp)
     D_prob, D_logit = discriminator(images)
 
     D_fake_prob, D_fake_logit = discriminator(G, Reuse=True)
 
-    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_logit, tf.ones_like(D_logit)))
-    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.zeros_like(D_fake_logit)))
+    d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_logit, logits=tf.ones_like(D_logit)))
+    d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.zeros_like(D_fake_logit)))
 
     sigma_loss = tf.reduce_mean(tf.square(zsig-1))/3    # sigma regularizer
-    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.ones_like(D_fake_logit)))
+    gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=D_fake_logit, logits=tf.ones_like(D_fake_logit)))
     dloss = d_loss_real + d_loss_fake 
 
     t_vars = tf.trainable_variables()
