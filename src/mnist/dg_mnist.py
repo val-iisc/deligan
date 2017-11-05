@@ -1,5 +1,5 @@
-# This is the code for experiments performed on the MNIST dataset for the DeLiGAN model. Minor adjustments in 
-# the code as suggested in the comments can be done to test GAN. Corresponding details about these experiments 
+# This is the code for experiments performed on the MNIST dataset for the DeLiGAN model. Minor adjustments in
+# the code as suggested in the comments can be done to test GAN. Corresponding details about these experiments
 # can be found in section 5.3 of the paper and the results showing the outputs can be seen in Fig 4.
 
 import tensorflow as tf
@@ -31,9 +31,9 @@ def Minibatch_Discriminator(input, num_kernels=100, dim_per_kernel=5, init=False
     x=tf.reshape(x, [batchsize,num_inputs])
     activation = tf.matmul(x, W)
     activation = tf.reshape(activation,[-1,num_kernels,dim_per_kernel])
-    abs_dif = tf.mul(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2), 
+    abs_dif = tf.mul(tf.reduce_sum(tf.abs(tf.sub(tf.expand_dims(activation,3),tf.expand_dims(tf.transpose(activation,[1,2,0]),0))),2),
                                                 1-tf.expand_dims(tf.constant(np.eye(batchsize),dtype=np.float32),1))
-    f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))  
+    f = tf.reduce_sum(tf.exp(-abs_dif),2)/tf.reduce_sum(tf.exp(-abs_dif))
     print(f.get_shape())
     print(input.get_shape())
     return tf.concat(1,[x, f])
@@ -92,7 +92,7 @@ def discriminator(image, Reuse=False):
         h6 = tf.reshape(h2,[-1, 4*4*df_dim*4])
         h7 = Minibatch_Discriminator(h3, num_kernels=df_dim*4, name = 'd_MD')
         h8 = dense(tf.reshape(h7, [batchsize, -1]), df_dim*4*2, 1, scope='d_h8_lin')
-        return tf.nn.sigmoid(h8), h8 
+        return tf.nn.sigmoid(h8), h8
 
 def generator(z):
     with tf.variable_scope('gen'):
@@ -130,26 +130,22 @@ with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
 
     sigma_loss = tf.reduce_mean(tf.square(zsig-1))/3    # sigma regularizer
     gloss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(D_fake_logit, tf.ones_like(D_fake_logit)))
-    dloss = d_loss_real + d_loss_fake 
+    dloss = d_loss_real + d_loss_fake
 
     t_vars = tf.trainable_variables()
     d_vars = [var for var in t_vars if 'd_' in var.name]
     g_vars = [var for var in t_vars if 'g_' in var.name]
 
     data = np.load(data_dir + 'mnist.npz')
-    trainx = np.concatenate([data['x_train']], axis=0)
-    trainy = np.concatenate([data['y_train']], axis=0)
-    trainx = trainx*2-1
-    print(trainy.shape)
+    trainx = np.concatenate([data['trainInps']], axis=0)
+    trainy = np.concatenate([data['trainTargs']], axis=0)
+    trainx = 2*trainx/255.-1
     data = []
     # Uniformly sampling 50 images per category from the dataset
     for i in range(10):
-        print(np.sum(trainy==i))
-        train = trainx[trainy==i]
-        print(train.shape)
+        train = trainx[np.argmax(trainy,1)==i]
         data.append(train[-50:])
     data = np.array(data)
-    print(data.shape)
     data = np.reshape(data,[-1,28*28])
 
     d_optim = tf.train.AdamOptimizer(lr1, beta1=beta1).minimize(dloss, var_list=d_vars)
